@@ -1,13 +1,28 @@
-const express = require('express')
+import { Client, GatewayIntentBits } from 'discord.js'
+import { config } from 'dotenv'
+import { google } from 'googleapis'
+// import { schedule } from 'node-cron'
 
-const PORT = 3000
-const HOST = '0.0.0.0'
+config()
+// schedule
 
-const app = express()
-
-app.get('/', (req, res) => {
-  res.send('Hello World!')
+const discordClient = new Client({
+  intents: [GatewayIntentBits.GuildMessages, GatewayIntentBits.Guilds],
 })
 
-app.listen(PORT, HOST)
-console.log(` 🚀 Running on http://localhost:${PORT} `)
+const youtubeClient = google.youtube({
+  version: 'v3',
+  auth: process.env.YOUTUBE_API_KEY,
+})
+
+let latestVideoId = ''
+
+discordClient.login(process.env.DISCORD_TOKEN)
+discordClient.on('ready', () => {
+  console.log(`🤖 online! Logado como ${discordClient.user.tag}`)
+  checkNewVideos()
+})
+
+async function checkNewVideos() {
+  const channelId = process.env.CHANNEL_ID
+}
