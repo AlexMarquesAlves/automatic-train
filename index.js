@@ -1,7 +1,7 @@
 import { Client, GatewayIntentBits } from 'discord.js'
 import { config } from 'dotenv'
 import { google } from 'googleapis'
-// import { schedule } from 'node-cron'
+import { schedule } from 'node-cron'
 
 config()
 
@@ -20,7 +20,7 @@ discordClient.login(process.env.DISCORD_TOKEN)
 discordClient.on('ready', () => {
   console.log(`🤖 online! Logado como ${discordClient.user.tag}`)
   checkNewVideos()
-  schedule('* * 0 * * *', checkNewVideos)
+  schedule('0 * * * *', checkNewVideos)
 })
 
 async function checkNewVideos() {
